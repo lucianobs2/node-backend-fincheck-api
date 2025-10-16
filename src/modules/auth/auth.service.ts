@@ -74,10 +74,13 @@ export class AuthService {
               { name: 'Viagem', icon: 'travel', type: 'EXPENSE' },
               { name: 'Outro', icon: 'other', type: 'EXPENSE' },
             ],
+            skipDuplicates: false,
           },
         },
       },
     });
+
+    console.log(user);
 
     const accessToken = await this.generateJwtToken(user.id);
 

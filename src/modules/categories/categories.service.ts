@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { CategoriesRepository } from 'src/shared/database/repositories/categories.repository';
 
 @Injectable()
 export class CategoriesService {
-  findAll() {
-    return `This action returns all categories`;
+  constructor(private categoriesRepository: CategoriesRepository) {}
+  async findAllByUserId(userId: string) {
+    return this.categoriesRepository.findMany({
+      where: { userId },
+    });
   }
 }

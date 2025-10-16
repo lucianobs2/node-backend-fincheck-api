@@ -60,7 +60,7 @@ enum TransactionType {
 
 model Category {
   id        String          @id @default(uuid()) @db.Uuid
-  name      String          @unique
+  name      String
   icon      String
   type      TransactionType
   createdAt DateTime        @default(now()) @map("created_at")
