@@ -6,7 +6,7 @@ import { PrismaService } from '../prisma.service';
 export class CategoriesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findMany(findManyDTO: Prisma.CategoryFindManyArgs) {
+  findMany(findManyDTO: Prisma.CategoryFindManyArgs) {
     return this.prismaService.category.findMany(findManyDTO);
   }
 }
