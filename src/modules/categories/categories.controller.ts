@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserIsActive } from 'src/shared/decorators/UserIsActive';
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './services/categories.service';
 
 @Controller('categories')
 export class CategoriesController {
