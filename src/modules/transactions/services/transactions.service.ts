@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+
+import { endOfMonth, startOfMonth } from 'date-fns';
 import { ValidateBankAccountOwnershipService } from 'src/modules/bank-accounts/services/validate-bank-account-ownership.service';
 import { ValidateCategoryOwnershipService } from 'src/modules/categories/services/validate-category-ownership.service';
 import { TransactionsRepository } from 'src/shared/database/repositories/transactions-repository';
 import { CreateTransactionDto } from '../dto/create-transaction.dto';
 import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { TransactionType } from '../entities/Transaction';
 import { ValidateTransactionOwnershipService } from './validate-transaction-ownership.service';
 
 @Injectable()
@@ -34,8 +37,34 @@ export class TransactionsService {
     });
   }
 
-  findAllByUserId(userId: string) {
-    return this.transactionsRepository.findMany({ where: { userId } });
+  findAllByUserId(
+    userId: string,
+    filters: {
+      month: number;
+      year: number;
+      bankAccountId?: string;
+      type?: TransactionType;
+    },
+  ) {
+    const FIRST_DAY_OF_MONTH = startOfMonth(
+      new Date(Date.UTC(filters.year, filters.month)),
+    );
+
+    const LAST_DAY_OF_MONTH = endOfMonth(
+      new Date(Date.UTC(filters.year, filters.month)),
+    );
+
+    return this.transactionsRepository.findMany({
+      where: {
+        userId,
+        bankAccountId: filters.bankAccountId,
+        type: filters.type,
+        date: {
+          gte: FIRST_DAY_OF_MONTH,
+          lt: LAST_DAY_OF_MONTH,
+        },
+      },
+    });
   }
 
   async update(
