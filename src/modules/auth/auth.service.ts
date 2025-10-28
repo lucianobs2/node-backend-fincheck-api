@@ -80,8 +80,6 @@ export class AuthService {
       },
     });
 
-    console.log(user);
-
     const accessToken = await this.generateJwtToken(user.id);
 
     return { accessToken };
